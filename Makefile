@@ -1,14 +1,22 @@
-.PHONY: fmt
-fmt:
-	find . -name \*.go -not -path \*/wire_gen.go -exec goimports -w {} \;
+test:
+	go test -v ./...
+.PHONY: test
 
-.PHONY: mod
+bench:
+	go test -v -bench=. -benchmem
+.PHONY: bench
+
+fmt:
+	find . -name \*.go -exec goimports -w {} \;
+.PHONY: fmt
+
 mod:
 	go mod tidy -v
+.PHONY: mod
 
-.PHONY: lint
 lint:
 	golangci-lint run ./...
+.PHONY: lint
 
-.PHONY: finalcheck
 finalcheck: fmt mod lint
+.PHONY: finalcheck
