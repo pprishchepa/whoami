@@ -4,18 +4,18 @@ import (
 	"math"
 	"time"
 
-	"github.com/alecthomas/units"
+	"github.com/docker/go-units"
 )
 
 type Options struct {
 	Addr               string
 	Debug              bool
 	Concurrency        int
-	ReadBufferSize     units.Base2Bytes
-	WriteBufferSize    units.Base2Bytes
+	ReadBufferSize     int64
+	WriteBufferSize    int64
 	ReadTimeout        time.Duration
 	WriteTimeout       time.Duration
-	MaxRequestBodySize units.Base2Bytes
+	MaxRequestBodySize int64
 }
 
 //goland:noinspection GoUnusedGlobalVariable

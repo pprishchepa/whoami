@@ -3,7 +3,6 @@ module github.com/pprishchepa/whoami
 go 1.19
 
 require (
-	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137
 	github.com/docker/go-units v0.5.0
 	github.com/fasthttp/router v1.4.16
 	github.com/rs/zerolog v1.29.0
