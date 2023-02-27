@@ -41,5 +41,6 @@ func Serve(ctx context.Context, opts Options) error {
 		}
 	}()
 
+	log.Info().Msgf("serve on %v", opts.Addr)
 	return srv.ListenAndServe(opts.Addr)
 }

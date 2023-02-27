@@ -18,5 +18,5 @@ lint:
 	golangci-lint run ./...
 .PHONY: lint
 
-finalcheck: fmt mod lint
+finalcheck: fmt mod lint test
 .PHONY: finalcheck

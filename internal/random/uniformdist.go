@@ -29,23 +29,24 @@ func Write(dest *bytes.Buffer, size int) {
 		return
 	}
 
-	srcIdx := rand.Intn(len(randomBytes))
+	// Randomize initial position to copy bytes from.
+	pos := rand.Intn(len(randomBytes))
+
 	var chunkSize int
-	var maxSize int
 
 	for {
 		chunkSize = size
-		maxSize = len(randomBytes) - srcIdx
-		if chunkSize > maxSize {
-			chunkSize = maxSize
+		if chunkSize > len(randomBytes)-pos {
+			chunkSize = len(randomBytes) - pos
 		}
-		dest.Write(randomBytes[srcIdx : srcIdx+chunkSize])
-		srcIdx += chunkSize
-		if srcIdx >= len(randomBytes) {
-			srcIdx = 0
-		}
-		if dest.Len() >= size {
+		dest.Write(randomBytes[pos : pos+chunkSize])
+		size -= chunkSize
+		if size <= 0 {
 			return
+		}
+		pos += chunkSize
+		if pos >= len(randomBytes) {
+			pos = 0
 		}
 	}
 }

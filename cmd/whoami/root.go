@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"math/rand"
 	"os"
 	"os/signal"
@@ -13,14 +14,14 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	_ "go.uber.org/automaxprocs"
 )
 
 var debugMode bool
+var serverPort int
 
 var rootCmd = &cobra.Command{
-	Short: "Whoami is blazing-fast testing upstream.",
+	Short: "Whoami is blazing-fast upstream for load testing.",
 	Use:   "whoami",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		log.Logger = zerolog.New(zerolog.ConsoleWriter{Out: os.Stdout}).
@@ -29,16 +30,18 @@ var rootCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		rand.Seed(time.Now().UnixNano())
 		random.Randomize(5 * units.MiB)
+
 		opts := server.DefaultOptions
+		opts.Addr = fmt.Sprintf(":%v", serverPort)
 		opts.Debug = debugMode
+
 		return server.Serve(cmd.Context(), opts)
 	},
 }
 
 func init() {
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix("WHOAMI")
-	rootCmd.PersistentFlags().BoolVarP(&debugMode, "debug", "D", viper.GetBool("DEBUG"), "Enable debug mode")
+	rootCmd.PersistentFlags().IntVarP(&serverPort, "port", "p", 8081, "Server port")
+	rootCmd.PersistentFlags().BoolVarP(&debugMode, "debug", "D", false, "Enable debug mode")
 }
 
 func Execute() {
