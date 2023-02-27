@@ -14,6 +14,16 @@ func init() {
 	Randomize(128)
 }
 
+func Randomize(size int) {
+	if size < 1 {
+		size = 1
+	}
+	randomBytes = make([]byte, size)
+	for i := range randomBytes {
+		randomBytes[i] = baseCharset[rand.Intn(len(baseCharset))]
+	}
+}
+
 func Write(dest *bytes.Buffer, size int) {
 	if size < 1 {
 		return
@@ -37,15 +47,5 @@ func Write(dest *bytes.Buffer, size int) {
 		if dest.Len() >= size {
 			return
 		}
-	}
-}
-
-func Randomize(size int) {
-	if size < 1 {
-		size = 1
-	}
-	randomBytes = make([]byte, size)
-	for i := range randomBytes {
-		randomBytes[i] = baseCharset[rand.Intn(len(baseCharset))]
 	}
 }

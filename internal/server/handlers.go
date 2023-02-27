@@ -60,15 +60,11 @@ func dataHandler(ctx *fasthttp.RequestCtx) {
 		timerPool.Put(timer)
 	}
 
-	if headerSize.Valid {
-		if headerSize.Range {
-			headerSize.Max = int64(random.NormFloat64(float64(headerSize.Min), float64(headerSize.Max)))
-		}
+	if headerSize.Valid && headerSize.Range {
+		headerSize.Max = int64(random.NormFloat64(float64(headerSize.Min), float64(headerSize.Max)))
 	}
-	if bodySize.Valid {
-		if bodySize.Range {
-			bodySize.Max = int64(random.NormFloat64(float64(bodySize.Min), float64(bodySize.Max)))
-		}
+	if bodySize.Valid && bodySize.Range {
+		bodySize.Max = int64(random.NormFloat64(float64(bodySize.Min), float64(bodySize.Max)))
 	}
 
 	var buf *bytes.Buffer

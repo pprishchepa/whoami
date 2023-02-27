@@ -1,6 +1,5 @@
 // noinspection NpmUsedModulesInstalled
 
-import {check} from 'k6';
 import http from 'k6/http';
 
 export function setup() {
@@ -10,6 +9,9 @@ export function setup() {
 
 export const options = {
     discardResponseBodies: true,
+    thresholds: {
+        http_req_failed: ['rate<0.02'], // http errors should be less than 2%
+    },
     scenarios: {
         default: {
             executor: 'ramping-arrival-rate',
@@ -30,9 +32,5 @@ export default function () {
     };
 
     // noinspection JSUnresolvedVariable
-    const res = http.get(`${__ENV.URL}`, params);
-
-    check(res, {
-        'is status 200': (r) => r.status === 200,
-    });
+    http.get(`${__ENV.URL}`, params);
 }
