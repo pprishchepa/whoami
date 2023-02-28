@@ -15,6 +15,10 @@ func Serve(ctx context.Context, opts Options) error {
 	}
 
 	r := router.New()
+	r.RedirectTrailingSlash = false
+	r.RedirectFixedPath = false
+	r.NotFound = whoamiHandler
+
 	r.GET("/", whoamiHandler)
 	r.GET("/bench", benchHandler)
 	r.GET("/data", dataHandler)

@@ -12,6 +12,7 @@ import (
 
 func whoamiHandler(ctx *fasthttp.RequestCtx) {
 	ctx.SetContentType("text/plain; charset=utf8")
+	ctx.Response.Header.Add("X-Whoami-Handler", "whoami")
 	_, _ = fmt.Fprintf(ctx, "Request: %s %s\n", ctx.Method(), ctx.URI().String())
 	_, _ = fmt.Fprintf(ctx, "Host: %q\n", ctx.Host())
 	_, _ = fmt.Fprintf(ctx, "IP: %q\n\n", ctx.RemoteIP())
@@ -19,11 +20,13 @@ func whoamiHandler(ctx *fasthttp.RequestCtx) {
 
 func benchHandler(ctx *fasthttp.RequestCtx) {
 	ctx.SetContentType("text/plain; charset=utf8")
+	ctx.Response.Header.Add("X-Whoami-Handler", "bench")
 	_, _ = ctx.WriteString("OK")
 }
 
 func dataHandler(ctx *fasthttp.RequestCtx) {
 	ctx.SetContentType("text/plain; charset=utf8")
+	ctx.Response.Header.Add("X-Whoami-Handler", "data")
 
 	var err error
 
