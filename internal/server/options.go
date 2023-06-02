@@ -8,6 +8,7 @@ import (
 )
 
 type Options struct {
+	Name               string
 	Addr               string
 	Debug              bool
 	Concurrency        int
@@ -20,6 +21,7 @@ type Options struct {
 
 //goland:noinspection GoUnusedGlobalVariable
 var DefaultOptions = Options{
+	Name:               "undefined",
 	Addr:               ":8081",
 	Debug:              false,
 	Concurrency:        math.MaxInt, //unlimited

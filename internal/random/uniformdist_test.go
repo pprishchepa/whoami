@@ -10,6 +10,8 @@ import (
 )
 
 func TestUniformWrite(t *testing.T) {
+	//nolint:staticcheck
+	//goland:noinspection GoDeprecation
 	rand.Seed(1)
 	random.Randomize(8) // randomize default charset with length of 8 bytes
 

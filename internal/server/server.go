@@ -17,9 +17,13 @@ func Serve(ctx context.Context, opts Options) error {
 	r := router.New()
 	r.RedirectTrailingSlash = false
 	r.RedirectFixedPath = false
-	r.NotFound = whoamiHandler
+	r.NotFound = func(ctx *fasthttp.RequestCtx) {
+		whoamiHandler(ctx, opts.Name)
+	}
 
-	r.GET("/", whoamiHandler)
+	r.GET("/", func(ctx *fasthttp.RequestCtx) {
+		whoamiHandler(ctx, opts.Name)
+	})
 	r.GET("/bench", benchHandler)
 	r.GET("/data", dataHandler)
 	r.GET("/random", dataHandler)
@@ -45,6 +49,6 @@ func Serve(ctx context.Context, opts Options) error {
 		}
 	}()
 
-	log.Info().Msgf("serve on %v", opts.Addr)
+	log.Info().Msgf("server \"%s\" serve on %v", opts.Name, opts.Addr)
 	return srv.ListenAndServe(opts.Addr)
 }
