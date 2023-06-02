@@ -5,7 +5,6 @@ import (
 	"log"
 	"math/rand"
 	"testing"
-	"time"
 
 	"github.com/pprishchepa/whoami/internal/random"
 	"github.com/stretchr/testify/assert"
@@ -23,6 +22,8 @@ func BenchmarkNormFloat64(b *testing.B) {
 }
 
 func TestNormFloat64(t *testing.T) {
+	//nolint:staticcheck
+	//goland:noinspection GoDeprecation
 	rand.Seed(1)
 	assert.Equal(t, 0.8578302881800055, random.NormFloat64(0.06, 2))
 	assert.Equal(t, 0.1417047235875345, random.NormFloat64(0.06, 2))
@@ -30,7 +31,6 @@ func TestNormFloat64(t *testing.T) {
 
 func TestNormFloat64_MakeHist(t *testing.T) {
 	t.Skip()
-	rand.Seed(time.Now().UnixNano())
 	var dist []float64
 	for i := 0; i < 10000; i++ {
 		dist = append(dist, random.NormFloat64(0.06, 2))

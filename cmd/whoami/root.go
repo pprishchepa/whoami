@@ -3,10 +3,8 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"math/rand"
 	"os"
 	"os/signal"
-	"time"
 
 	"github.com/docker/go-units"
 	"github.com/pprishchepa/whoami/internal/random"
@@ -19,6 +17,7 @@ import (
 
 var debugMode bool
 var serverPort int
+var serverName string
 
 var rootCmd = &cobra.Command{
 	Short: "Whoami is blazing-fast upstream for load testing.",
@@ -28,10 +27,11 @@ var rootCmd = &cobra.Command{
 			Level(zerolog.TraceLevel).With().Timestamp().Logger()
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		rand.Seed(time.Now().UnixNano())
 		random.Randomize(5 * units.MiB)
 
 		opts := server.DefaultOptions
+
+		opts.Name = serverName
 		opts.Addr = fmt.Sprintf(":%v", serverPort)
 		opts.Debug = debugMode
 
@@ -40,6 +40,7 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
+	rootCmd.PersistentFlags().StringVarP(&serverName, "name", "n", "undefined", "Server name")
 	rootCmd.PersistentFlags().IntVarP(&serverPort, "port", "p", 8081, "Server port")
 	rootCmd.PersistentFlags().BoolVarP(&debugMode, "debug", "D", false, "Enable debug mode")
 }
